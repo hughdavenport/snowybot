@@ -57,10 +57,14 @@ class Bot(irc.IRCClient):
             self.factory.follownick = newuser
 
     def irc_RPL_WHOISCHANNELS(self, prefix, params):
+        global joined
         channels = params[2].strip().split(' ')
         for channel in channels:
             channel = channel.lstrip('@')
-            self.join(channel)
+            try:
+                joined.index(channel)
+            except Error:
+                self.join(channel)
 
     def lineReceived(self, line):
         print "Got line %s" % line
