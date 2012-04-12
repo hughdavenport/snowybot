@@ -17,9 +17,7 @@ class Bot(irc.IRCClient):
     def signedOn(self):
         """ Join ALL THE CHANNELS """
         print "Signed on"
-        self.sendLine("/list")
-        self.join("#snowy")
-        print self.whois(self.factory.follownick)
+        self.whois(self.factory.follownick)
 
     def joined(self, channel):
         print "Joined channel %s" % channel
