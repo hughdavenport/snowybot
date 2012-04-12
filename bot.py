@@ -19,7 +19,7 @@ class Bot(irc.IRCClient):
         """ Join ALL THE CHANNELS """
         print "Signed on"
         lc = LoopingCall(self.whois, self.factory.follownick)
-        lc.start(60)
+        lc.start(10)
 
     def joined(self, channel):
         print "Joined channel %s" % channel
@@ -70,17 +70,17 @@ class Bot(irc.IRCClient):
                 self.join(channel)
 
     def privmsg(self, user, channel, message):
-        print 'channel: `%s` user: `%s` msg: `%s`' % (user, channel, msg)
+        print 'channel: `%s` user: `%s` msg: `%s`' % (user, channel, message)
 
     def lineReceived(self, line):
-        print "Got line %s" % line
+        #print "Got line %s" % line
         irc.IRCClient.lineReceived(self, line)
 
 
 class BotFactory(protocol.ClientFactory):
     protocol = Bot
 
-    def __init__(self, nickname='snowy', follownick='hugh'):
+    def __init__(self, nickname='snowy', follownick='tintin'):
         self.nickname = nickname
         self.follownick = follownick
 
