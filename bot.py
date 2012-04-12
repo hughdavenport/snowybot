@@ -40,14 +40,14 @@ class Bot(irc.IRCClient):
     def userJoined(self, user, channel):
         print "User %s joined %s" % (user, channel)
 
-    def userLeft(self, user, channel):
-        print "User %s parted %s" % (user, channel)
+    def userLeft(self, user, channel, reason):
+        print "User %s parted %s (%s)" % (user, channel, reason)
         self.msg(channel, "WOOF WOOF")
         if user == self.factory.follownick:
             self.leave(channel)
 
-    def userQuit(self, user, channel):
-        print "User %s quit %s" % (user, channel)
+    def userQuit(self, user, reason):
+        print "User %s quit (%s)" % (user, reason)
         if user == self.factory.follownick:
             self.leave(channel)
 
