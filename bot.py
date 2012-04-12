@@ -4,6 +4,7 @@
 
 import sys
 from twisted.internet import reactor, protocol
+from twisted.internet.task import LoopingCall
 from twisted.words.protocols import irc
 
 joined = []
@@ -17,7 +18,8 @@ class Bot(irc.IRCClient):
     def signedOn(self):
         """ Join ALL THE CHANNELS """
         print "Signed on"
-        self.whois(self.factory.follownick)
+        lc = LoopingCall(self.whois, self.factory.follownick)
+        lc.start(60)
 
     def joined(self, channel):
         print "Joined channel %s" % channel
