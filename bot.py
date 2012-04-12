@@ -29,8 +29,13 @@ class Bot(irc.IRCClient):
     def left(self, channel):
         print "Left channel %s" % channel
         global joined
-        print joined
         joined.remove(channel)
+
+    def kickedFrom(self, channel, kicker, message):
+        print "Kicked from channel %s by %s (%s)" % (channel, kicker, message)
+        global joined
+        joined.remove(channel)
+        self.join(channel)
 
     def userJoined(self, user, channel):
         print "User %s joined %s" % (user, channel)
@@ -46,8 +51,8 @@ class Bot(irc.IRCClient):
         if user == self.factory.follownick:
             self.leave(channel)
 
-    def userKicked(self, user, channel, kicker):
-        print "User %s kicked from %s by %s" % (user, channel, kicker)
+    def userKicked(self, user, channel, kicker, message):
+        print "User %s kicked from %s by %s (%s)" % (user, channel, kicker, message)
         if user == self.factory.follownick:
             self.leave(channel)
 
@@ -63,6 +68,9 @@ class Bot(irc.IRCClient):
             channel = channel.lstrip('@')
             if not channel in joined:
                 self.join(channel)
+
+    def privmsg(self, user, channel, message):
+        print 'channel: `%s` user: `%s` msg: `%s`' % (user, channel, msg)
 
     def lineReceived(self, line):
         print "Got line %s" % line
