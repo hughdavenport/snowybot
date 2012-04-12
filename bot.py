@@ -61,9 +61,7 @@ class Bot(irc.IRCClient):
         channels = params[2].strip().split(' ')
         for channel in channels:
             channel = channel.lstrip('@')
-            try:
-                joined.index(channel)
-            except Error:
+            if not channel in joined:
                 self.join(channel)
 
     def lineReceived(self, line):
