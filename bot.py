@@ -96,8 +96,6 @@ class Bot(irc.IRCClient):
 	elif msg == 'die':
 	    self.msg(channel, 'YELP!')
 	    self.leave(channel)
-	    time.sleep(5)
-	    self.join(channel)
 	elif msg == 'woof':
 	    self.msg(channel, 'WOOF')
 
