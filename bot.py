@@ -2,6 +2,7 @@
 
 """A really simple IRC bot."""
 
+import time
 import sys
 from twisted.internet import reactor, protocol
 from twisted.internet.task import LoopingCall
@@ -73,7 +74,8 @@ class Bot(irc.IRCClient):
                 self.join(channel)
 
     def privmsg(self, user, channel, msg):
-        user = user[:user.index('!')]
+	if '!' in user:
+	    user = user[:user.index('!')]
         if channel == self.factory.nickname:
             print '*%s* %s' % (user, msg)
             sendto = user
@@ -91,6 +93,14 @@ class Bot(irc.IRCClient):
         print msg
         if msg == 'help':
             self.msg(channel, "Hi %s, I'm %s. I follow %s around." % (user, self.factory.nickname, self.factory.follownick))
+	elif msg == 'die':
+	    self.msg(channel, 'YELP!')
+	    self.leave(channel)
+	    time.sleep(5)
+	    self.join(channel)
+	elif msg == 'woof':
+	    self.msg(channel, 'WOOF')
+
 
 #    def irc_unknown(self, prefix, command, params):
 #        print "%s: %s(%s)" % (prefix, command, params)
