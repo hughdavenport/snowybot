@@ -67,7 +67,7 @@ class Bot(irc.IRCClient):
         channels = params[2].strip().split(' ')
         for channel in channels:
             channel = channel.lstrip('@')
-            if channel != '#catalyst' and channel != '#lunch':
+            if channel != '#lunch':
                 continue
             if not channel in joined:
                 print "Trying to join %s" % channel
@@ -121,6 +121,7 @@ class BotFactory(protocol.ClientFactory):
 
     def clientConnectionFailed(self, connector, reason):
         print "Connection failed. Reason: %s" % reason
+        connector.connect()
 
 if __name__ == "__main__":
     reactor.connectTCP('irc', 6667, BotFactory())
