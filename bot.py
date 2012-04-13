@@ -66,7 +66,7 @@ class Bot(irc.IRCClient):
         channels = params[2].strip().split(' ')
         for channel in channels:
             channel = channel.lstrip('@')
-            if channel != '#catalyst':
+            if channel != '#catalyst' and channel != '#lunch':
                 continue
             if not channel in joined:
                 print "Trying to join %s" % channel
