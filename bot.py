@@ -66,14 +66,37 @@ class Bot(irc.IRCClient):
         channels = params[2].strip().split(' ')
         for channel in channels:
             channel = channel.lstrip('@')
+            if channel != '#catalyst':
+                continue
             if not channel in joined:
+                print "Trying to join %s" % channel
                 self.join(channel)
 
-    def privmsg(self, user, channel, message):
-        print 'channel: `%s` user: `%s` msg: `%s`' % (user, channel, message)
+    def privmsg(self, user, channel, msg):
+        user = user[:user.index('!')]
+        if channel == self.factory.nickname:
+            print '*%s* %s' % (user, msg)
+            sendto = user
+        else:
+            print '%s: <%s> %s' % (channel, user, msg)
+            sendto = channel
+        if msg.startswith('!'):
+            self.act( user, sendto, msg[1:] )
+        elif msg.startswith(self.factory.nickname + ': '):
+            self.act( user, sendto, msg[(len(self.factory.nickname)+2):].lstrip('!') )
+        elif channel == self.factory.nickname:
+            self.act( user, sendto, msg )
+
+    def act(self, user, channel, msg):
+        print msg
+        if msg == 'help':
+            self.msg(channel, "Hi %s, I'm %s. I follow %s around." % (user, self.factory.nickname, self.factory.follownick))
+
+#    def irc_unknown(self, prefix, command, params):
+#        print "%s: %s(%s)" % (prefix, command, params)
 
     def lineReceived(self, line):
-        #print "Got line %s" % line
+        #print line
         irc.IRCClient.lineReceived(self, line)
 
 
