@@ -43,8 +43,8 @@ class Bot(irc.IRCClient):
 
     def userLeft(self, user, channel):
         print "User %s parted %s" % (user, channel)
-        self.msg(channel, "WOOF WOOF")
         if user == self.factory.follownick:
+            self.msg(channel, "WOOF WOOF")
             self.leave(channel)
 
     def userQuit(self, user, reason):
@@ -67,8 +67,8 @@ class Bot(irc.IRCClient):
         channels = params[2].strip().split(' ')
         for channel in channels:
             channel = channel.lstrip('@')
-            if channel != '#lunch':
-                continue
+#            if channel != '#lunch':
+#                continue
             if not channel in joined:
                 print "Trying to join %s" % channel
                 self.join(channel)
@@ -93,11 +93,24 @@ class Bot(irc.IRCClient):
         print msg
         if msg == 'help':
             self.msg(channel, "Hi %s, I'm %s. I follow %s around." % (user, self.factory.nickname, self.factory.follownick))
-	elif msg == 'die':
-	    self.msg(channel, 'YELP!')
-	    self.leave(channel)
-	elif msg == 'woof':
-	    self.msg(channel, 'WOOF')
+        elif msg == 'die':
+            self.msg(channel, 'YELP!')
+            self.leave(channel)
+        elif msg == 'woof':
+            self.msg(channel, 'WOOF')
+        elif msg == 'meow':
+            self.msg(channel, 'MEOW? Do you think I\'m a cat or something... I\'m %s!' % self.factory.nickname)
+        elif msg == 'fight':
+            self.msg(channel, 'Release the hounds you say?? RAWWR')
+        elif msg == 'heel':
+            if user != self.factory.follownick:
+                self.msg(channel, 'I only heel for %s' % self.factory.follownick)
+            else:
+                self.msg(channel, 'Yes master :(')
+        elif msg == 'quote':
+            self.msg(channel, 'YOU WANT A QUOTE?! YOU CAN\'T HANDLE A QUOTE')
+        else:
+            self.msg(channel, 'I don\'t know what you mean by \'%s\'' % msg)
 
 
 #    def irc_unknown(self, prefix, command, params):
@@ -111,7 +124,7 @@ class Bot(irc.IRCClient):
 class BotFactory(protocol.ClientFactory):
     protocol = Bot
 
-    def __init__(self, nickname='snowy', follownick='tintin'):
+    def __init__(self, nickname='bathound', follownick='batman'):
         self.nickname = nickname
         self.follownick = follownick
 
