@@ -82,9 +82,9 @@ class Bot(irc.IRCClient):
         else:
             print '%s: <%s> %s' % (channel, user, msg)
             sendto = channel
-        if msg.startswith('!'):
-            self.act( user, sendto, msg[1:] )
-        elif msg.startswith(self.factory.nickname + ': '):
+#        if msg.startswith('!'):
+#            self.act( user, sendto, msg[1:] )
+        if msg.startswith(self.factory.nickname + ': '):
             self.act( user, sendto, msg[(len(self.factory.nickname)+2):].lstrip('!') )
         elif channel == self.factory.nickname:
             self.act( user, sendto, msg )
